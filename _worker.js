@@ -4927,7 +4927,7 @@ function generateRemark(index, port, address, cleanIPs, protocol, configType) {
   let remark = "";
   let addressType;
   const type = configType ? ` ${configType}` : "";
-  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
+  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "@VPNSTOREVIP" : isIPv6(address) ? "IPv6" : "";
   return `\u{1F4A6} ${index} - ${protocol}${type} - ${addressType} : ${port}`;
 }
 function isDomain(address) {
