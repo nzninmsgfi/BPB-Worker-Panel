@@ -4927,7 +4927,7 @@ function generateRemark(index, port, address, cleanIPs, protocol, configType) {
   let remark = "";
   let addressType;
   const type = configType ? ` ${configType}` : "";
-  cleanIPs.includes(address) ? addressType = "Clean IP" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
+  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
   return `\u{1F4A6} ${index} - ${protocol}${type} - ${addressType} : ${port}`;
 }
 function isDomain(address) {
@@ -7519,7 +7519,7 @@ async function getXrayCustomConfigs(env, proxySettings, hostName, isFragment) {
         customConfig.remarks = remark;
         if (chainProxy) {
           customConfig.outbounds.unshift(chainProxy, { ...outbound });
-          isDomain(addr) ? customConfig.dns.servers[chainDnsServerIndex].domains.push(`full:${addr}`) : customConfig.dns.servers.splice(chainDnsServerIndex, 1);
+          is(addr) ? customConfig.dns.servers[chainDnsServerIndex].s.push(`full:${addr}`) : customConfig.dns.servers.splice(chainDnsServerIndex, 1);
           outbound.tag = `prox-${proxyIndex}`;
           let chainOutbound = structuredClone(chainProxy);
           chainOutbound.tag = `chain-${proxyIndex}`;
@@ -7541,7 +7541,7 @@ async function getXrayCustomConfigs(env, proxySettings, hostName, isFragment) {
   if (chainProxy) {
     bestPing.observatory.subjectSelector = ["chain"];
     bestPing.routing.balancers[0].selector = ["chain"];
-    bestPing.dns.servers[vlessTrojanFakeDNS ? 2 : 1].domains = domainAddressesRules;
+    bestPing.dns.servers[vlessTrojanFakeDNS ? 2 : 1].s = AddressesRules;
   }
   if (!isFragment)
     return [...configs, bestPing];
@@ -7569,7 +7569,7 @@ async function getXrayCustomConfigs(env, proxySettings, hostName, isFragment) {
     delete proxy.streamSettings.sockopt.dialerProxy;
     proxy.tag = "proxy";
     bestFragment.outbounds.unshift(chainProxy, proxy);
-    bestFragment.dns.servers[chainDnsServerIndex].domains = domainAddressesRules;
+    bestFragment.dns.servers[chainDnsServerIndex].s = AddressesRules;
   } else {
     let proxy = structuredClone(outbounds[0]);
     delete proxy.streamSettings.sockopt.dialerProxy;
@@ -7642,7 +7642,7 @@ async function buildClashDNS(proxySettings, isWarp) {
   const finalRemoteDNS = isWarp ? "1.1.1.1" : remoteDNS;
   const dohPattern = /^(?:[a-zA-Z]+:\/\/)?([^:\/\s?]+)/;
   const DNSNameserver = finalRemoteDNS.match(dohPattern)[1];
-  const isDOHDomain = isDomain(DNSNameserver);
+  const isDOH = is(DNSNameserver);
   let clashLocalDNS = localDNS === "localhost" ? "system" : localDNS;
   const isFakeDNS = vlessTrojanFakeDNS && !isWarp || warpFakeDNS && isWarp;
   let dns = {
