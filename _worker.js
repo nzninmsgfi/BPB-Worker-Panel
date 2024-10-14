@@ -4927,7 +4927,7 @@ function generateRemark(index, port, address, cleanIPs, protocol, configType) {
   let remark = "";
   let addressType;
   const type = configType ? ` ${configType}` : "";
-  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
+  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "ipv4" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
   return `\u{1F4A6} ${index} - ${protocol}${type} - ${addressType} : ${port}`;
 }
 function isDomain(address) {
@@ -5810,10 +5810,10 @@ function renderHomePage(proxySettings, hostName, isPassSet) {
                             </div>
                         </td>
                         <td>
-                            <button onclick="openQR('https://${hostName}/sub/${userID}#BPB-Normal', 'Normal Subscription')" style="margin-bottom: 8px;">
+                            <button onclick="openQR('https://${hostName}/sub/${userID}#@VPNSTOREVIP', 'Normal Subscription')" style="margin-bottom: 8px;">
                                 QR Code&nbsp;<span class="material-symbols-outlined">qr_code</span>
                             </button>
-                            <button onclick="copyToClipboard('https://${hostName}/sub/${userID}#BPB-Normal', false)">
+                            <button onclick="copyToClipboard('https://${hostName}/sub/${userID}#@VPNSTOREVIP', false)">
                                 Copy Sub<span class="material-symbols-outlined">format_list_bulleted</span>
                             </button>
                         </td>
@@ -5876,10 +5876,10 @@ function renderHomePage(proxySettings, hostName, isPassSet) {
                             </div>
                         </td>
                         <td>
-                            <button onclick="openQR('https://${hostName}/sub/${userID}?app=xray#BPB-Full-Normal', 'Full normal Subscription')" style="margin-bottom: 8px;">
+                            <button onclick="openQR('https://${hostName}/sub/${userID}?app=xray#@VPNSTOREVIP', 'Full normal Subscription')" style="margin-bottom: 8px;">
                                 QR Code&nbsp;<span class="material-symbols-outlined">qr_code</span>
                             </button>
-                            <button onclick="copyToClipboard('https://${hostName}/sub/${userID}?app=xray#BPB-Full-Normal', false)">
+                            <button onclick="copyToClipboard('https://${hostName}/sub/${userID}?app=xray#@VPNSTOREVIP', false)">
                                 Copy Sub<span class="material-symbols-outlined">format_list_bulleted</span>
                             </button>
                         </td>
@@ -7917,7 +7917,7 @@ async function getClashNormalConfig(env, proxySettings, hostName) {
   const totalAddresses = [...Addresses, ...customCdnAddresses];
   let proxyIndex = 1;
   const protocols = [
-    ...vlessConfigs ? ["VLESS"] : [],
+    ...vlessConfigs ? ["@VPNSTOREVIP"] : [],
     ...trojanConfigs ? ["Trojan"] : []
   ];
   protocols.forEach((protocol) => {
@@ -8553,7 +8553,7 @@ async function getNormalConfigs(proxySettings, hostName, client) {
       const host = isCustomAddr ? customCdnHost : hostName;
       const path = `${getRandomPath(16)}${proxyIP2 ? `/${encodeURIComponent(btoa(proxyIP2))}` : ""}${earlyData}`;
       const trojanIndex = vlessConfigs ? proxyIndex + totalCount : proxyIndex;
-      const vlessRemark = encodeURIComponent(generateRemark(proxyIndex, port, addr, cleanIPs, "@VPNSTOREVIP", configType));
+      const vlessRemark = encodeURIComponent(generateRemark(proxyIndex, port, addr, cleanIPs, "VLESS", configType));
       const trojanRemark = encodeURIComponent(generateRemark(trojanIndex, port, addr, cleanIPs, "Trojan", configType));
       const tlsFields = defaultHttpsPorts.includes(port) ? `&security=tls&sni=${sni}&fp=randomized&alpn=${alpn}` : "&security=none";
       if (vlessConfigs) {
