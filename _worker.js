@@ -4927,7 +4927,7 @@ function generateRemark(index, port, address, cleanIPs, protocol, configType) {
   let remark = "";
   let addressType;
   const type = configType ? ` ${configType}` : "";
-  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "@VPNSTOREVIP" : isIPv6(address) ? "IPv6" : "";
+  cleanIPs.includes(address) ? addressType = "NEW" : addressType = isDomain(address) ? "Domain" : isIPv4(address) ? "IPv4" : isIPv6(address) ? "IPv6" : "";
   return `\u{1F4A6} ${index} - ${protocol}${type} - ${addressType} : ${port}`;
 }
 function isDomain(address) {
@@ -8548,12 +8548,12 @@ async function getNormalConfigs(proxySettings, hostName, client) {
   ports.forEach((port) => {
     totalAddresses.forEach((addr, index) => {
       const isCustomAddr = index > Addresses.length - 1;
-      const configType = isCustomAddr ? "C" : "";
+      const configType = isCustomAddr ? "Fake" : "";
       const sni = isCustomAddr ? customCdnSni : randomUpperCase(hostName);
       const host = isCustomAddr ? customCdnHost : hostName;
       const path = `${getRandomPath(16)}${proxyIP2 ? `/${encodeURIComponent(btoa(proxyIP2))}` : ""}${earlyData}`;
       const trojanIndex = vlessConfigs ? proxyIndex + totalCount : proxyIndex;
-      const vlessRemark = encodeURIComponent(generateRemark(proxyIndex, port, addr, cleanIPs, "VLESS", configType));
+      const vlessRemark = encodeURIComponent(generateRemark(proxyIndex, port, addr, cleanIPs, "@VPNSTOREVIP", configType));
       const trojanRemark = encodeURIComponent(generateRemark(trojanIndex, port, addr, cleanIPs, "Trojan", configType));
       const tlsFields = defaultHttpsPorts.includes(port) ? `&security=tls&sni=${sni}&fp=randomized&alpn=${alpn}` : "&security=none";
       if (vlessConfigs) {
